@@ -27,10 +27,13 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerView)
         addPostButton = findViewById(R.id.addPostButton)
-
-
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+
+        if (!NetworkUtils.isNetworkAvailable(this)) {
+            showNoInternetDialog()
+            return
+        }
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com/")
@@ -41,21 +44,28 @@ class MainActivity : AppCompatActivity() {
         postViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(PostViewModel::class.java)
         postViewModel.setRepository(postRepository)
 
-
+        // Завантаження постів
         postViewModel.posts.observe(this, { posts ->
             recyclerView.adapter = PostAdapter(posts) { post ->
                 showPostOptionsDialog(post)
             }
         })
 
-
         addPostButton.setOnClickListener {
             val intent = Intent(this, AddPostActivity::class.java)
             startActivityForResult(intent, ADD_POST_REQUEST_CODE)
         }
 
-
         postViewModel.fetchPosts()
+    }
+
+    private fun showNoInternetDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Відсутнє з'єднання")
+            .setMessage("Перевірте ваше інтернет-з'єднання і спробуйте знову.")
+            .setPositiveButton("ОК") { _, _ -> finish() }
+            .setCancelable(false)
+            .show()
     }
 
     private fun showPostOptionsDialog(post: Post) {
