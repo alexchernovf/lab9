@@ -21,7 +21,7 @@ class AddPostActivity : AppCompatActivity() {
         bodyEditText = findViewById(R.id.bodyEditText)
         saveButton = findViewById(R.id.saveButton)
 
-        // Установка данных для редактирования
+
         postId = intent.getIntExtra("postId", -1).takeIf { it != -1 }
         titleEditText.setText(intent.getStringExtra("postTitle"))
         bodyEditText.setText(intent.getStringExtra("postBody"))
