@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity() {
         postViewModel.fetchPosts()
     }
 
-
     private fun showPostOptionsDialog(post: Post) {
         val options = arrayOf("Редагувати", "Видалити")
         AlertDialog.Builder(this)
@@ -86,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         val updatedPosts = postViewModel.posts.value?.toMutableList()
         updatedPosts?.remove(post)
         postViewModel.posts.value = updatedPosts
-        Toast.makeText(this, "Пост удален", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Пост видалений", Toast.LENGTH_SHORT).show()
     }
 
 
